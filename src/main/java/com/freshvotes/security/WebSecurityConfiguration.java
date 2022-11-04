@@ -22,8 +22,6 @@ public class WebSecurityConfiguration {
     public PasswordEncoder getPasswordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
-
 //    @Bean
 //    public UserDetailsService userDetailsService() {
 //        return auth
@@ -40,6 +38,8 @@ public class WebSecurityConfiguration {
                 .build();
         return new InMemoryUserDetailsManager(user);
     }
+
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
