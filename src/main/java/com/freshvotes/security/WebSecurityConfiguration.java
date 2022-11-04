@@ -33,11 +33,13 @@ public class WebSecurityConfiguration   {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.csrf().disable()
+        http
                 .authorizeRequests()
                 .antMatchers("/").permitAll()
                 .anyRequest().hasRole("USER").and()
-                .formLogin().loginPage("/login").permitAll().and()
+                .formLogin().loginPage("/login")
+                .defaultSuccessUrl("/dashboard")
+                .permitAll().and()
                 .logout().logoutUrl("/logout").permitAll();
         return http.build();
     }
