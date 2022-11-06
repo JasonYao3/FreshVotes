@@ -11,7 +11,7 @@ class UserDetailsServiceTest {
     @Test
     public void generate_encrypted_password() {
         BCryptPasswordEncoder encoder = new  BCryptPasswordEncoder();
-        String rawPassword = "password";
+        String rawPassword = "asdasd";
         String encodedPassword = encoder.encode(rawPassword);
 
 
