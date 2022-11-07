@@ -3,12 +3,11 @@ package com.freshvotes.security;
 import com.freshvotes.domain.User;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.HashSet;
 import java.util.Set;
 
 public class CustomSecurityUser extends User implements UserDetails {
 
-    Set<Authority> authorities = new HashSet<>();
+    // Set<Authority> authorities = new HashSet<>();
 
     public CustomSecurityUser() {
     }
