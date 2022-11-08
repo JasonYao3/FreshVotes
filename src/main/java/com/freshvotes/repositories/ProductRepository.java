@@ -20,4 +20,6 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     // select * from product where user = :user
     List<Product> findByUser(User user);
 
+    Optional<Product> findByName(String name);
+
 }
