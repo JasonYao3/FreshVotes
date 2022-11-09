@@ -39,7 +39,9 @@ public class FeatureController {
                              @PathVariable Long productId, @PathVariable Long featureId) {
         Optional<Feature> featureOpt = featureService.findById(featureId);
         if (featureOpt.isPresent()) {
-            model.put("feature", featureOpt.get());
+            Feature feature = featureOpt.get();
+            model.put("feature", feature);
+            model.put("comments", feature.getComments());
 
         }
         // TODO: handle the situation where we can't find a feature by the featureId
