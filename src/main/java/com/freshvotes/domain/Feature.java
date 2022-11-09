@@ -1,6 +1,8 @@
 package com.freshvotes.domain;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class Feature {
@@ -15,14 +17,8 @@ public class Feature {
     private Product product;
     @ManyToOne
     private User user;
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
+    @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="feature")
+    private Set<Comment> comments = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -64,5 +60,19 @@ public class Feature {
         this.product = product;
     }
 
+    public User getUser() {
+        return user;
+    }
 
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Set<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(Set<Comment> comments) {
+        this.comments = comments;
+    }
 }
