@@ -35,7 +35,7 @@ public class FeatureController {
     }
 
     @GetMapping("{featureId}")
-    public String getFeature(ModelMap model,
+    public String getFeature(@AuthenticationPrincipal User user, ModelMap model,
                              @PathVariable Long productId, @PathVariable Long featureId) {
         Optional<Feature> featureOpt = featureService.findById(featureId);
         if (featureOpt.isPresent()) {
@@ -43,6 +43,7 @@ public class FeatureController {
 
         }
         // TODO: handle the situation where we can't find a feature by the featureId
+        model.put("user", user);
 
         return "feature";
     }
