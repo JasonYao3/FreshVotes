@@ -1,5 +1,7 @@
 package com.freshvotes.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Date;
@@ -14,10 +16,13 @@ public class Comment {
     @Column(length = 5000)
     private String text;
     @ManyToOne
+    @JsonIgnore
     private User user;
     @ManyToOne
+    @JsonIgnore
     private Feature feature;
     @OneToMany(mappedBy = "comment")
+    @JsonIgnore
     private List<Comment> comments = new ArrayList<>();
     @ManyToOne
     @JoinColumn(name="comment_id", nullable = true)
