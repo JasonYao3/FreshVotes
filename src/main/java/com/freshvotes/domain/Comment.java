@@ -1,14 +1,15 @@
 package com.freshvotes.domain;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Entity
-public class Comment {
+@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class, property = "@id")
+public class Comment implements Comparable<Comment> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,7 +24,8 @@ public class Comment {
     private Feature feature;
     @OneToMany(mappedBy = "comment")
     @JsonIgnore
-    private List<Comment> comments = new ArrayList<>();
+    @OrderBy("createdDate, id")
+    private SortedSet<Comment> comments = new TreeSet<>();
     @ManyToOne
     @JoinColumn(name="comment_id", nullable = true)
     private Comment comment;
@@ -62,13 +64,15 @@ public class Comment {
         this.feature = feature;
     }
 
-    public List<Comment> getComments() {
+    public SortedSet<Comment> getComments() {
         return comments;
     }
 
-    public void setComments(List<Comment> comments) {
+    public void setComments(SortedSet<Comment> comments) {
         this.comments = comments;
     }
+
+
 
     public Comment getComment() {
         return comment;
@@ -84,5 +88,35 @@ public class Comment {
 
     public void setCreatedDate(Date createdDate) {
         this.createdDate = createdDate;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Comment comment = (Comment) o;
+        return id.equals(comment.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
+    @Override
+    public String toString() {
+        return "Comment{" +
+                "id=" + id +
+                ", text='" + text + '\'' +
+                '}';
+    }
+
+    @Override
+    public int compareTo(Comment that) {
+        int comparedValue = this.createdDate.compareTo(that.createdDate);
+        if (comparedValue == 0) {
+            comparedValue = this.id.compareTo(that.id);
+        }
+        return comparedValue;
     }
 }

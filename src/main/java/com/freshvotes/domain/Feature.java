@@ -1,10 +1,14 @@
 package com.freshvotes.domain;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 @Entity
+@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class, property = "@id")
 public class Feature {
 
     @Id
@@ -18,7 +22,8 @@ public class Feature {
     @ManyToOne
     private User user;
     @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="feature")
-    private Set<Comment> comments = new HashSet<>();
+    @OrderBy("createdDate, id")
+    private SortedSet<Comment> comments = new TreeSet<>();
 
     public Long getId() {
         return id;
@@ -68,11 +73,11 @@ public class Feature {
         this.user = user;
     }
 
-    public Set<Comment> getComments() {
+    public SortedSet<Comment> getComments() {
         return comments;
     }
 
-    public void setComments(Set<Comment> comments) {
+    public void setComments(SortedSet<Comment> comments) {
         this.comments = comments;
     }
 }
