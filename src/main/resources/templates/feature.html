@@ -2,6 +2,22 @@
 <html xmlns:th="http://thymeleaf.org">
 <head>
     <script th:replace="fragments/header :: headerElement"></script>
+    <script type="text/javascript">
+      $(function () {
+    	$("button[id*='replyBtn-']").click(function () {
+    	  $("form[id*='replyForm-']:not(.d-none)").each(function () {
+    		  // used to hide currently displayed child comment forms
+    		  let formId = $(this).prop("id")
+
+    	      $("#"+formId).addClass("d-none")
+    	  })
+    	  let commentId = $(this).prop("id").split("-")[1]
+    	  let formId = "replyForm-" + commentId
+
+    	  $("#"+formId).removeClass("d-none")
+    	})
+      })
+    </script>
     <title>FreshVotes Feature</title>
 </head>
 <body>
@@ -39,12 +55,18 @@
 
     <div style="margin-top: 2em; margin-bottom: 3em">
         <h2>Comments</h2>
-        <form action="">
+        <form th:action="@{/products/{productId}/features/{featureId}/comments(productId=${feature.product.id},featureId=${feature.id})}" method="post">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+
             <div class="form-group" style="margin-top: 1.5em">
-                <label for="exampleFormControlTextarea1">Leave a comment below</label>
-                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                <label for="text">Leave a comment below</label>
+                <textarea class="form-control" th:field="${rootComment.text}" rows="3"></textarea>
+            </div>
+            <div>
+                <button type="submit" class="btn btn-primary">Add Comment</button>
             </div>
         </form>
+        <hr/>
         <div th:replace="fragments/comment :: commentThread"></div>
     </div>
 </div>
